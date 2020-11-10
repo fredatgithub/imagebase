@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ImageBase.WebApp.Models.Authentication;
+using ImageBase.WebApp.Data.Models.Authentication;
+using ImageBase.WebApp.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace ImageBase.WebApp.Controllers
             var roles = new List<string>();
             var user = await _userManager.FindByEmailAsync(User.Identity.Name);
             if (user != null)
-                roles = (List<string>)await _userManager.GetRolesAsync(user);
+                roles = (List<string>)await _userManager.GetRolesAsync(user);            
 
             return View(roles);
         }

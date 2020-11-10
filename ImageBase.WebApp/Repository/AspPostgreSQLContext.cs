@@ -1,5 +1,6 @@
 ﻿using ImageBase.WebApp.Data.ConfigurationDataBase.ConfigurationPostgreSQL;
-using ImageBase.WebApp.Models.Authentication;
+using ImageBase.WebApp.Data.Models;
+using ImageBase.WebApp.Data.Models.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ImageBase.WebApp.Data
+namespace ImageBase.WebApp.Repository
 {
     public class AspPostgreSQLContext : IdentityDbContext<User>
     {
@@ -31,6 +32,12 @@ namespace ImageBase.WebApp.Data
             builder.ApplyConfiguration(new IdentityRoleClaimConfiguration());
             builder.ApplyConfiguration(new IdentityUserLoginConfiguration());
             builder.ApplyConfiguration(new IdentityUserClaimConfiguration());
+
+            new ImageConfiguration(builder.Entity<Image>());
+            new KeyWordConfiguration(builder.Entity<KeyWord>());
+            new ImageKeyWordConfiguration(builder.Entity<ImageKeyWord>());
+            new CatalogConfiguration(builder.Entity<Catalog>());
+            new ImageCatalogConfiguration(builder.Entity<ImageCatalog>());
 
         }
     }

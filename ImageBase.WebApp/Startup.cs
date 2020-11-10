@@ -13,9 +13,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
-using ImageBase.WebApp.Models.Authentication;
+using ImageBase.WebApp.Data.Models.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Serialization;
+using ImageBase.WebApp.Repository;
+using ImageBase.WebApp.Repository.Storage;
+using ImageBase.WebApp.Service.Interface;
+using ImageBase.WebApp.Service.Implementation;
 
 namespace ImageBase.WebApp
 {
@@ -41,6 +45,14 @@ namespace ImageBase.WebApp
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddIdentity<User, IdentityRole>().
                AddEntityFrameworkStores<AspPostgreSQLContext>();
+
+            services.AddScoped(typeof(IImageRepository), typeof(ImageRepository));
+            services.AddScoped(typeof(ICatalogRepository), typeof(CatalogRepository));
+            services.AddScoped(typeof(IImageCatalogRepository), typeof(ImageCatalogRepository));
+
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<ICatalogService, CatalogService>();
+            services.AddTransient<IImageCatalogService, ImageCatalogService>();
 
             services.AddMvc();
 

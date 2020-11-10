@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ImageBase.WebApp.Models.Authentication
+namespace ImageBase.WebApp.Data.Models
 {
-    public interface IUser
+    public class BaseEntity
     {
+        public long Id { get; set; }
     }
 }
