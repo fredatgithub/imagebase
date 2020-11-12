@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using ImageBase.WebApp.Data.Dtos;
 using ImageBase.WebApp.Data.Models;
-using ImageBase.WebApp.Repository;
-using ImageBase.WebApp.Repository.Storage;
-using ImageBase.WebApp.Service.Interface;
+using ImageBase.WebApp.Repositories;
+using ImageBase.WebApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ImageBase.WebApp.Service.Implementation
+namespace ImageBase.WebApp.Services.Implementations
 {
     public class ImageService: IImageService
     {
@@ -23,11 +22,12 @@ namespace ImageBase.WebApp.Service.Implementation
             _context = context;
             _mapper = mapper;
         }
-        public void CreateImage(AddImageDto imageDto)
+
+        public async Task CreateImageAsync(AddImageDto imageDto)
         {
             Image image = _mapper.Map<Image>(imageDto);
             _repository.Add(image);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

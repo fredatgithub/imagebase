@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ImageBase.WebApp.Repository.Storage
+namespace ImageBase.WebApp.Repositories
 {
-    public interface IImageRepository: IRepository<Image>
+    public interface IImageRepository: IRepository<Image, long>
     {
     }
 }

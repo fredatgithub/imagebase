@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ImageBase.WebApp.Repository.Storage
+namespace ImageBase.WebApp.Repositories
 {
-    public interface IRepository<T> where T: BaseEntity
+    public interface IRepository<T, TId> 
     {
-        T Get(long id);
+        T Get(TId id);
         IEnumerable<T> GetAll();
         void Add(T obj);
         T Update(T obj);
-        bool Delete(long id);
+        bool Delete(TId id);
     }
 }

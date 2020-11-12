@@ -8,6 +8,6 @@ namespace ImageBase.WebApp.Data.Dtos
     public class UpdateImageCatalogDto
     {
         public long ImageId { get; set; }
-        public long CatalogId { get; set; }
+        public int CatalogId { get; set; }
     }
 }

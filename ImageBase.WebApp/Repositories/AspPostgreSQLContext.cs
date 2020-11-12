@@ -9,10 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ImageBase.WebApp.Repository
+namespace ImageBase.WebApp.Repositories
 {
     public class AspPostgreSQLContext : IdentityDbContext<User>
     {
+        public DbSet<Image> Images { get; set; }
+        public DbSet<ImageCatalog> ImageCatalogs { get; set; }
+        public DbSet<Catalog> Catalogs { get; set; }
         public AspPostgreSQLContext(DbContextOptions<AspPostgreSQLContext> options)
             : base(options)
         {
@@ -34,8 +37,6 @@ namespace ImageBase.WebApp.Repository
             builder.ApplyConfiguration(new IdentityUserClaimConfiguration());
 
             new ImageConfiguration(builder.Entity<Image>());
-            new KeyWordConfiguration(builder.Entity<KeyWord>());
-            new ImageKeyWordConfiguration(builder.Entity<ImageKeyWord>());
             new CatalogConfiguration(builder.Entity<Catalog>());
             new ImageCatalogConfiguration(builder.Entity<ImageCatalog>());
 

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ImageBase.WebApp.Data.Models
 {
-    public class Catalog: BaseEntity
+    public class Catalog: BaseEntity<int>
     {
         public string Name { get; set; }
-        public long? ParentCatalogId { get; set; }
+
+        public int? ParentCatalogId { get; set; }
         public Catalog ParentCatalog { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }

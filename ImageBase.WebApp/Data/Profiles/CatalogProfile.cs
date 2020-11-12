@@ -13,14 +13,11 @@ namespace ImageBase.WebApp.Data.Profiles
         public CatalogProfile()
         {
             CreateMap<ImageDto, Image>().ReverseMap();
-            CreateMap<CatalogDto, Catalog>().ReverseMap();            
+            CreateMap<CatalogDto, Catalog>().ReverseMap();
             CreateMap<AddImageDto, Image>()
-                .ForMember(map => map.ImageCatalogs, map => map.MapFrom(i => i.CatalogsId))
-                .ForMember(map => map.ImageKeyWords, map => map.MapFrom(i => i.KeyWordsId));
+                .ForMember(map => map.ImageCatalogs, map => map.MapFrom(i => i.CatalogsIds));
             CreateMap<long, ImageCatalog>()
                 .ForMember(map => map.CatalogId, map => map.MapFrom(c => c));
-            CreateMap<long, ImageKeyWord>()
-                .ForMember(map => map.KeyWordId, map => map.MapFrom(c => c));
         }
     }
 }

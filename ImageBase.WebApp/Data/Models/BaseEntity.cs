@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace ImageBase.WebApp.Data.Models
 {
-    public class BaseEntity
+    public class BaseEntity<TId>
+        where TId: IComparable
     {
-        public long Id { get; set; }
+        public TId Id { get; set; }
     }
 }

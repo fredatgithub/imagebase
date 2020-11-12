@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ImageBase.WebApp.Service.Interface
+namespace ImageBase.WebApp.Services.Interfaces
 {
     public interface IImageService
     {
-        void CreateImage(AddImageDto imageDto);
+        Task CreateImageAsync(AddImageDto imageDto);
     }
 }

@@ -12,10 +12,9 @@ namespace ImageBase.WebApp.Data.ConfigurationDataBase.ConfigurationPostgreSQL
     {
         public ImageCatalogConfiguration(EntityTypeBuilder<ImageCatalog> entityBuilder)
         {
-            entityBuilder.HasKey(ikw => ikw.Id);
+            entityBuilder.HasKey(ic => new { ic.CatalogId, ic.ImageId});
             entityBuilder.Property(ic => ic.ImageId).HasColumnName("image_id");
             entityBuilder.Property(ic => ic.CatalogId).HasColumnName("catalog_id");
-            entityBuilder.Property(ic => ic.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
             entityBuilder.HasOne(i => i.Image)
                 .WithMany(ic => ic.ImageCatalogs)

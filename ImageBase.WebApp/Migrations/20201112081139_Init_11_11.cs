@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ImageBase.WebApp.Migrations
 {
-    public partial class Init_11_8 : Migration
+    public partial class Init_11_11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,24 +15,12 @@ namespace ImageBase.WebApp.Migrations
                     id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(maxLength: 200, nullable: false),
-                    description = table.Column<string>(type: "text", nullable: true)
+                    description = table.Column<string>(type: "text", nullable: true),
+                    key_words = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_images", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "key_words",
-                columns: table => new
-                {
-                    id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    key = table.Column<string>(maxLength: 15, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_key_words", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,32 +63,6 @@ namespace ImageBase.WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "images_key_words",
-                columns: table => new
-                {
-                    id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    image_id = table.Column<long>(nullable: false),
-                    key_word_id = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_images_key_words", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_images_key_words_images_image_id",
-                        column: x => x.image_id,
-                        principalTable: "images",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_images_key_words_key_words_key_word_id",
-                        column: x => x.key_word_id,
-                        principalTable: "key_words",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "roles_claims",
                 columns: table => new
                 {
@@ -125,11 +87,11 @@ namespace ImageBase.WebApp.Migrations
                 name: "catalogs",
                 columns: table => new
                 {
-                    id = table.Column<long>(nullable: false)
+                    id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(maxLength: 15, nullable: false),
-                    parent_catalog_id = table.Column<long>(nullable: true),
-                    user_id = table.Column<string>(nullable: false)
+                    name = table.Column<string>(maxLength: 30, nullable: false),
+                    parent_catalog_id = table.Column<int>(nullable: true),
+                    user_id = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -145,7 +107,7 @@ namespace ImageBase.WebApp.Migrations
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,14 +199,12 @@ namespace ImageBase.WebApp.Migrations
                 name: "images_catalogs",
                 columns: table => new
                 {
-                    id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     image_id = table.Column<long>(nullable: false),
-                    catalog_id = table.Column<long>(nullable: false)
+                    catalog_id = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_images_catalogs", x => x.id);
+                    table.PrimaryKey("PK_images_catalogs", x => new { x.catalog_id, x.image_id });
                     table.ForeignKey(
                         name: "FK_images_catalogs_catalogs_catalog_id",
                         column: x => x.catalog_id,
@@ -270,24 +230,9 @@ namespace ImageBase.WebApp.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_images_catalogs_catalog_id",
-                table: "images_catalogs",
-                column: "catalog_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_images_catalogs_image_id",
                 table: "images_catalogs",
                 column: "image_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_images_key_words_image_id",
-                table: "images_key_words",
-                column: "image_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_images_key_words_key_word_id",
-                table: "images_key_words",
-                column: "key_word_id");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -333,9 +278,6 @@ namespace ImageBase.WebApp.Migrations
                 name: "images_catalogs");
 
             migrationBuilder.DropTable(
-                name: "images_key_words");
-
-            migrationBuilder.DropTable(
                 name: "roles_claims");
 
             migrationBuilder.DropTable(
@@ -355,9 +297,6 @@ namespace ImageBase.WebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "images");
-
-            migrationBuilder.DropTable(
-                name: "key_words");
 
             migrationBuilder.DropTable(
                 name: "roles");

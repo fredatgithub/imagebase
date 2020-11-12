@@ -16,10 +16,9 @@ using AutoMapper;
 using ImageBase.WebApp.Data.Models.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Serialization;
-using ImageBase.WebApp.Repository;
-using ImageBase.WebApp.Repository.Storage;
-using ImageBase.WebApp.Service.Interface;
-using ImageBase.WebApp.Service.Implementation;
+using ImageBase.WebApp.Repositories;
+using ImageBase.WebApp.Services.Interfaces;
+using ImageBase.WebApp.Services.Implementations;
 
 namespace ImageBase.WebApp
 {
@@ -48,11 +47,9 @@ namespace ImageBase.WebApp
 
             services.AddScoped(typeof(IImageRepository), typeof(ImageRepository));
             services.AddScoped(typeof(ICatalogRepository), typeof(CatalogRepository));
-            services.AddScoped(typeof(IImageCatalogRepository), typeof(ImageCatalogRepository));
 
-            services.AddTransient<IImageService, ImageService>();
-            services.AddTransient<ICatalogService, CatalogService>();
-            services.AddTransient<IImageCatalogService, ImageCatalogService>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<ICatalogService, CatalogService>();
 
             services.AddMvc();
 
@@ -62,7 +59,7 @@ namespace ImageBase.WebApp
                 options.Cookie.HttpOnly = true;
 
                 options.ExpireTimeSpan = TimeSpan.FromDays(36500);
-
+                
                 options.LoginPath = "/api/Authentication/login";
                 options.SlidingExpiration = true;
             });

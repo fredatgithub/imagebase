@@ -16,6 +16,7 @@ namespace ImageBase.WebApp.Data.ConfigurationDataBase.ConfigurationPostgreSQL
             entityBuilder.Property(i => i.Id).HasColumnName("id");
             entityBuilder.Property(i => i.Title).HasColumnName("title").HasMaxLength(200).IsRequired();
             entityBuilder.Property(i => i.Description).HasColumnName("description").HasColumnType("text");
+            entityBuilder.Property(i => i.KeyWords).HasColumnName("key_words").HasColumnType("text");
             entityBuilder.Property(i => i.Id).ValueGeneratedOnAdd();
 
             entityBuilder.ToTable("images");

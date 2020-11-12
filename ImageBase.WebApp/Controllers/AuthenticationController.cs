@@ -6,7 +6,7 @@ using AutoMapper;
 using AutoMapper.Configuration;
 using ImageBase.WebApp.Data.Dtos.AuthenticationDto;
 using ImageBase.WebApp.Data.Models.Authentication;
-using ImageBase.WebApp.Service;
+using ImageBase.WebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

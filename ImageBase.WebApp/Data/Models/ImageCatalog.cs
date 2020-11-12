@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ImageBase.WebApp.Data.Models
 {
-    public class ImageCatalog: BaseEntity
+    public class ImageCatalog
     {
         public long ImageId { get; set; }
         public Image Image { get; set; }
-        public long CatalogId { get; set; }
+        public int CatalogId { get; set; }
         public Catalog Catalog { get; set; }
     }
 }
