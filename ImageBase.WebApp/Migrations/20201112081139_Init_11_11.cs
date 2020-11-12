@@ -101,7 +101,7 @@ namespace ImageBase.WebApp.Migrations
                         column: x => x.parent_catalog_id,
                         principalTable: "catalogs",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_catalogs_users_user_id",
                         column: x => x.user_id,

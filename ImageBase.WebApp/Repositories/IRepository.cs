@@ -8,10 +8,10 @@ namespace ImageBase.WebApp.Repositories
 {
     public interface IRepository<T, TId> 
     {
-        T Get(TId id);
-        IEnumerable<T> GetAll();
+        Task<bool> DeleteAsync(TId id);
+        Task<T> GetAsync(TId id);
+        Task<IEnumerable<T>> GetAllAsync();
         void Add(T obj);
-        T Update(T obj);
-        bool Delete(TId id);
+        T Update(T obj);        
     }
 }

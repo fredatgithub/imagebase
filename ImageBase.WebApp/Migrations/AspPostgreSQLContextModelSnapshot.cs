@@ -329,7 +329,8 @@ namespace ImageBase.WebApp.Migrations
                 {
                     b.HasOne("ImageBase.WebApp.Data.Models.Catalog", "ParentCatalog")
                         .WithMany()
-                        .HasForeignKey("ParentCatalogId");
+                        .HasForeignKey("ParentCatalogId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ImageBase.WebApp.Data.Models.Authentication.User", "User")
                         .WithMany("Catalogs")

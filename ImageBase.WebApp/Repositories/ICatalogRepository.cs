@@ -1,4 +1,5 @@
-﻿using ImageBase.WebApp.Data.Models;
+﻿using ImageBase.WebApp.Data.Dtos;
+using ImageBase.WebApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace ImageBase.WebApp.Repositories
 {
     public interface ICatalogRepository: IRepository<Catalog, int>
     {
-        IEnumerable<Catalog> GetSubCatalogs(int id);
-        IQueryable<Image> GetImagesByCatalog(long id);
+        Task<IEnumerable<Catalog>> GetSubCatalogsAsync(int id);
+        Task<PaginationListDto<Image>> GetImagesByCatalogAsync(long id, int offset, int limit);
         void AddImageToCatalog(ImageCatalog imageCatalog);
         void DeleteImageFromCatalog(ImageCatalog imageCatalog);
         Task<ImageCatalog> GetImageCatalogByIdFKAsync(long idImg, int idCat);

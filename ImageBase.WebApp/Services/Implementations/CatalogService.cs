@@ -34,27 +34,27 @@ namespace ImageBase.WebApp.Services.Implementations
         
         public async Task<bool> DeleteCatalogAsync(int id)
         {
-            bool flag = _repository.Delete(id);
+            bool flag = await _repository.DeleteAsync(id);
             if (flag)
                 await _context.SaveChangesAsync();
             return flag;           
         }
 
-        public CatalogDto GetCatalog(int id)
+        public async Task<CatalogDto> GetCatalogAsync(int id)
         {
-            CatalogDto catalogDto = _mapper.Map<CatalogDto>(_repository.Get(id));
+            CatalogDto catalogDto = _mapper.Map<CatalogDto>(await _repository.GetAsync(id));
             return catalogDto;
         }
 
-        public IEnumerable<CatalogDto> GetCatalogs()
+        public async Task<IEnumerable<CatalogDto>> GetCatalogsAsync()
         {
-            var catalogsDto = _mapper.Map<IEnumerable<Catalog>, IEnumerable<CatalogDto>>(_repository.GetAll());
+            IEnumerable<CatalogDto> catalogsDto = _mapper.Map<IEnumerable<Catalog>, IEnumerable<CatalogDto>>(await _repository.GetAllAsync());
             return catalogsDto;
         }
 
-        public IEnumerable<CatalogDto> GetSubCatalogs(int id)
+        public async Task<IEnumerable<CatalogDto>> GetSubCatalogsAsync(int id)
         {
-            var catalogsDto = _mapper.Map<IEnumerable<Catalog>, IEnumerable<CatalogDto>>(_repository.GetSubCatalogs(id));
+            IEnumerable<CatalogDto> catalogsDto = _mapper.Map<IEnumerable<Catalog>, IEnumerable<CatalogDto>>(await _repository.GetSubCatalogsAsync(id));
             return catalogsDto;
         }
 
@@ -74,20 +74,11 @@ namespace ImageBase.WebApp.Services.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ImageDto>> GetImagesByCatalogAsync(int id)
+        public async Task<PaginationListDto<ImageDto>> GetImagesByCatalogAsync(int id, int offset, int limit)
         {
-            var catalog = _repository.GetImagesByCatalog(id);
-            return _mapper.Map<IEnumerable<Image>, IEnumerable<ImageDto>>(await catalog.ToListAsync());
-        }
+            PaginationListDto<Image> paginationListDto = await _repository.GetImagesByCatalogAsync(id, offset, limit);
 
-        public async Task<IEnumerable<ImageDto>> GetImagesByCatalogAsync(int id, int offset, int limit)
-        {
-            var imagesQuery = _repository.GetImagesByCatalog(id);
-            var list = await PaginationListDto<Image>.GetItems(imagesQuery.OrderBy(i => i.Id), offset, limit);
-
-            var imageDtos = _mapper.Map<IEnumerable<Image>, IEnumerable<ImageDto>>(list);
-
-            return imageDtos;
+            return _mapper.Map<PaginationListDto<Image>, PaginationListDto<ImageDto>>(paginationListDto);
         }
 
         public async Task AddImageToCatalogAsync(UpdateImageCatalogDto imageCatalogDto)

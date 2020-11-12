@@ -20,9 +20,9 @@ namespace ImageBase.WebApp.Repositories
             _context.Images.Add(obj);
         }
 
-        public bool Delete(long id)
+        public async Task<bool> DeleteAsync(long id)
         {
-            var obj = _context.Images.Single(p => p.Id.CompareTo(id) == 0);
+            var obj = await _context.Images.SingleAsync(p => p.Id.CompareTo(id) == 0);
             if (obj is null)
             {
                 return false;
@@ -32,14 +32,14 @@ namespace ImageBase.WebApp.Repositories
             return true;
         }
 
-        public Image Get(long id)
+        public async Task<Image> GetAsync(long id)
         {
-            return _context.Images.SingleOrDefault(p => p.Id == id);
+            return await _context.Images.SingleOrDefaultAsync(p => p.Id == id);
         }
 
-        public IEnumerable<Image> GetAll()
+        public async Task<IEnumerable<Image>> GetAllAsync()
         {
-            return _context.Images.AsEnumerable();
+            return await _context.Images.ToArrayAsync();
         }
 
         public Image Update(Image obj)

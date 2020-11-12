@@ -1,4 +1,5 @@
-﻿using ImageBase.WebApp.Data.Models;
+﻿using ImageBase.WebApp.Data.Dtos;
+using ImageBase.WebApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace ImageBase.WebApp.Repositories
             _context.Catalogs.Add(obj);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var obj = _context.Catalogs.Single(p => p.Id.CompareTo(id) == 0);
+            var obj = await _context.Catalogs.SingleAsync(p => p.Id.CompareTo(id) == 0);
             if (obj is null)
             {
                 return false;
@@ -32,19 +33,19 @@ namespace ImageBase.WebApp.Repositories
             return true;
         }
 
-        public Catalog Get(int id)
+        public async Task<Catalog> GetAsync(int id)
         {
-            return _context.Catalogs.SingleOrDefault(p => p.Id == id);
+            return await _context.Catalogs.SingleOrDefaultAsync(p => p.Id == id);
         }
 
-        public IEnumerable<Catalog> GetAll()
+        public async Task<IEnumerable<Catalog>> GetAllAsync()
         {
-            return _context.Catalogs.AsEnumerable();
+            return await _context.Catalogs.ToArrayAsync();
         }
 
-        public IEnumerable<Catalog> GetSubCatalogs(int id)
+        public async Task<IEnumerable<Catalog>> GetSubCatalogsAsync(int id)
         {
-            return _context.Catalogs.Where(c => c.ParentCatalogId == id).AsEnumerable();
+            return await _context.Catalogs.Where(c => c.ParentCatalogId == id).ToArrayAsync();
         }
 
         public Catalog Update(Catalog obj)
@@ -58,11 +59,27 @@ namespace ImageBase.WebApp.Repositories
             _context.ImageCatalogs.Remove(imageCatalog);
         }
 
-        public IQueryable<Image> GetImagesByCatalog(long id)
+        public async Task<PaginationListDto<Image>> GetImagesByCatalogAsync(long id, int offset, int limit)
         {
-            return _context.ImageCatalogs.Where(ic => ic.CatalogId == id)
+            IQueryable<Image> query = _context.ImageCatalogs.Where(ic => ic.CatalogId == id)
                 .Include(ic => ic.Image)
                 .Select(i => i.Image);
+
+            var totalCount = await query.CountAsync();
+            Image[] list = await query.OrderBy(i => i.Id)
+                .Skip(offset)
+                .Take(limit)
+                .ToArrayAsync();
+
+            var paginationList = new PaginationListDto<Image>()
+            {
+                Items = list,
+                Limit = limit,
+                Offset = offset,
+                TotalItemsCount = totalCount
+            };
+
+            return paginationList;
         }
 
         public void AddImageToCatalog(ImageCatalog imageCatalog)

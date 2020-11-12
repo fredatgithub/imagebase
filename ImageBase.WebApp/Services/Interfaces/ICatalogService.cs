@@ -9,15 +9,14 @@ namespace ImageBase.WebApp.Services.Interfaces
 {
     public interface ICatalogService
     {
-        IEnumerable<CatalogDto> GetCatalogs();
-        CatalogDto GetCatalog(int id);
-        Task<CatalogDto> UpdateCatalogAsync(int id, CatalogDto catalogDto);
-        IEnumerable<CatalogDto> GetSubCatalogs(int id);
+        Task<IEnumerable<CatalogDto>> GetCatalogsAsync();
+        Task<CatalogDto> GetCatalogAsync(int id);
+        Task<CatalogDto> UpdateCatalogAsync(int id, CatalogDto catalogDto);        
         Task<bool> DeleteCatalogAsync(int id);
         Task CreateCatalogAsync(CatalogDto catalogDto);
+        Task<IEnumerable<CatalogDto>> GetSubCatalogsAsync(int id);
         Task AddImageToCatalogAsync(UpdateImageCatalogDto imageCatalogDto);
-        Task<IEnumerable<ImageDto>> GetImagesByCatalogAsync(int id);
-        Task<IEnumerable<ImageDto>> GetImagesByCatalogAsync(int id, int offset, int limit);
+        Task<PaginationListDto<ImageDto>> GetImagesByCatalogAsync(int id, int offset, int limit);
         Task DeleteImageFromCatalogAsync(UpdateImageCatalogDto imageCatalogDto);
     }
 }
